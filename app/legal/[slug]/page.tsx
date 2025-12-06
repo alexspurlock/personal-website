@@ -8,11 +8,11 @@ import { unstable_noStore as noStore } from 'next/cache';
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata | undefined> {
-  const legalContent = getLegalContent().find(
-    (post) => post.slug === params.slug,
-  );
+  const { slug } = await params;
+
+  const legalContent = getLegalContent().find((post) => post.slug === slug);
   if (!legalContent) {
     return;
   }
@@ -73,14 +73,13 @@ function formatDate(date: string) {
   }
 }
 
-export default function LegalDocumentPage({
+export default async function LegalDocumentPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const legalContent = getLegalContent().find(
-    (post) => post.slug === params.slug,
-  );
+  const { slug } = await params;
+  const legalContent = getLegalContent().find((post) => post.slug === slug);
 
   if (!legalContent) {
     notFound();

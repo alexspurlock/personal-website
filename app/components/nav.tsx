@@ -23,6 +23,7 @@ export function Navbar() {
                 <Link
                   key={path}
                   href={path}
+                  target={name == 'resume' ? '_blank' : '_parent'}
                   className="transition-all hover:underline py-1 px-2"
                 >
                   {name}
